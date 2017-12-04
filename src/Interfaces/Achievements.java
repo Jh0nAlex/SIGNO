@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Interfaces;
 
 
@@ -14,10 +10,15 @@ import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import Resources.Connection;
+
+
 /**
- *
- * @author unicuces
+ * Clase principal para realizar la .
+ * <pre>Connection con = new Connection();</pre>
+ * @author Grupo de base de datos
+ * @version 1.0 10-11-2017 
  */
+
 public class Achievements extends javax.swing.JInternalFrame {
 
     DefaultTableModel model;
