@@ -3,15 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Interfaces;
+package gestionusuarios;
 
-import Resources.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
  *
- * @author Valentina
+ * @author Grupo prueba y calidad
  */
 public class Admin extends javax.swing.JInternalFrame {
 
@@ -22,7 +21,13 @@ public class Admin extends javax.swing.JInternalFrame {
     String IdNacimiento[];
     String IdGroup[];
     ResultSet rSearch;
-    
+/**
+ @author Grupo prueba y calidad
+ version 1.0
+ Constructor para inicializar la conexion con la base de datos
+ y cada uno de los metodos donde se cargan los paises, departamentos ciudades y el rol de cada usuario.
+ */
+        
     public Admin() {
         initComponents();
         cone = new Connection();
@@ -37,6 +42,12 @@ public class Admin extends javax.swing.JInternalFrame {
 //        cargarComboCiudad2();
     }
 
+    /**
+    @author Grupo prueba y calidad
+    version 1.1
+    Metodo que genera los paises que se encuentran en la base de datos signo_db 
+    para poder seleccionar el pais donde vive el usuario que se va a registrar. 
+    */
     public void cargarComboPais() {
         jcCountry.removeAllItems();
         
@@ -51,6 +62,12 @@ public class Admin extends javax.swing.JInternalFrame {
     
     }
     
+    /**
+    @author Grupo prueba y calidad
+    version 1.0
+    Metodo que genera los paises que se encuentran en la base de datos signo_db 
+    para poder seleccionar el pais donde nacio el usuario que se va a registrar. 
+    */
     public void cargarComboPais2() {
         Connection cone2 = new Connection();
         jcCountry2.removeAllItems();
@@ -66,6 +83,13 @@ public class Admin extends javax.swing.JInternalFrame {
     
     }
     
+    /**
+    @author Grupo prueba y calidad
+    version 1.0
+    Metodo que genera los departamentos que se encuentran en la base de datos signo_db 
+    para poder seleccionar el Departamento donde vive el usuario que se va a registrar 
+    y al seleccionar un pais solo quedan los departamentos correspondientes a dicho Pais.
+    */
      public void cargarComboDepartamento() {
          
         Connection cone3 = new Connection();
@@ -84,7 +108,14 @@ public class Admin extends javax.swing.JInternalFrame {
         }
     
     }
-    
+     
+    /**
+    @author Grupo prueba y calidad
+    version 1.0
+    Metodo que genera los departamentos que se encuentran en la base de datos signo_db para poder seleccionar el departamento donde nacio el usuario que se va a registrar
+    y al seleccionar un pais solo quedan los departamentos correspondientes a dicho Pais.
+    */
+     
     public void cargarComboDepartamento2() {
         Connection cone4 = new Connection();
         jcDepartment2.removeAllItems();
@@ -100,6 +131,15 @@ public class Admin extends javax.swing.JInternalFrame {
         }
     
     }
+    
+    /**
+    @author Grupo prueba y calidad
+    version 1.0
+    Metodo que genera las ciudades que se encuentran en la base de datos signo_db
+    para guardar en la tabla usuarios el ID de la ciudad donde vive el usuario que se va a registrar
+    y al seleccionar un departamento solo quedan las ciudades correspondientes a dicho Departamento.
+    */
+    
     
     public void cargarComboCiudad() {
         Connection cone5 = new Connection();
@@ -133,6 +173,14 @@ public class Admin extends javax.swing.JInternalFrame {
     
     }
     
+     /**
+    @author Grupo prueba y calidad
+    version 1.0
+    Metodo que genera las ciudades que se encuentran en la base de datos signo_db
+    para guardar en la tabla nuip el ID de la ciudad donde nacio el usuario que se va a registrar
+    y al seleccionar un departamento solo quedan las ciudades correspondientes a dicho Departamento.
+    */
+    
     public void cargarComboCiudad2() {
         Connection cone6 = new Connection();
         jcBirthPlace.removeAllItems();
@@ -162,6 +210,13 @@ public class Admin extends javax.swing.JInternalFrame {
         }
     
     }
+     /**
+    @author Grupo prueba y calidad
+    version 1.0
+    Metodo que genera las ciudades que se encuentran en la base de datos signo_db
+    para guardar en la tabla nuip el ID de la ciudad donde fue expedida la identificacion del usuario
+    y al seleccionar un departamento solo quedan las ciudades correspondientes a dicho Departamento.
+    */
     
     public void cargarComboExpedicion() {
         Connection cone7 = new Connection();
@@ -190,6 +245,14 @@ public class Admin extends javax.swing.JInternalFrame {
         }
     }
     
+     /**
+    @author Grupo prueba y calidad
+    version 1.0
+    Metodo que genera los roles registrados e la base de datos (administrador, estudiante, acudiente,docente)
+    y devuelve el id del rol seleccionado para guardarlo en la tabla usuario y en la tabla que corresponde al 
+    rol escogido.
+    */
+    
     public void cargarComboRol() {
         Connection cone8 = new Connection();
         try {
@@ -215,6 +278,12 @@ public class Admin extends javax.swing.JInternalFrame {
             }
             
     }
+     /**
+    @author Grupo prueba y calidad
+    version 1.0
+    Metodo que genera los grupos que han sido registrados en la base de datos y carga en el jcombobox los nombres
+    y devuelve el id del grupo seleccionado para poder guardarlo en la tabla estudiantes.
+    */
     
     public void cargarComboGroup () {
         Connection cone9 = new Connection();
@@ -494,34 +563,36 @@ public class Admin extends javax.swing.JInternalFrame {
                                         .addComponent(txtSecondName)
                                         .addComponent(txtSurname)
                                         .addComponent(txtSecondL, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                    .addComponent(jLabel9)
-                                    .addGap(92, 92, 92))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jbRegister)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                            .addComponent(jbConsult)
+                            .addGap(35, 35, 35)
+                            .addComponent(jbUpdate))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(jLabel9)
+                                        .addGap(92, 92, 92))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel10)
+                                        .addGap(105, 105, 105)))
                                 .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel10)
-                                    .addGap(105, 105, 105)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel11)
-                                    .addComponent(jLabel7)
-                                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel8)
-                                    .addComponent(jbRegister))
-                                .addGap(43, 43, 43)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtPhone)
-                            .addComponent(txtAddress)
-                            .addComponent(txtEmail)
-                            .addComponent(jcCountry, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jcCity, javax.swing.GroupLayout.Alignment.TRAILING, 0, 195, Short.MAX_VALUE)
-                            .addComponent(jcDepartment, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jbConsult)
-                                .addGap(18, 18, 18)
-                                .addComponent(jbUpdate)))))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel11)
+                                        .addComponent(jLabel7)
+                                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel8))
+                                    .addGap(47, 47, 47)))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(txtPhone)
+                                .addComponent(txtAddress)
+                                .addComponent(txtEmail)
+                                .addComponent(jcCountry, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jcCity, javax.swing.GroupLayout.Alignment.TRAILING, 0, 195, Short.MAX_VALUE)
+                                .addComponent(jcDepartment, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                 .addGap(47, 47, 47)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
@@ -696,18 +767,19 @@ public class Admin extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 28, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jbUpdate)
                             .addComponent(jbConsult)
-                            .addComponent(jbRegister)
-                            .addComponent(jbUpdate)))
+                            .addComponent(jbRegister))
+                        .addGap(31, 31, 31))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(txtGuardian, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(lblImg))
                             .addComponent(jLabel26))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                         .addComponent(lblAcu, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -721,23 +793,9 @@ public class Admin extends javax.swing.JInternalFrame {
         System.out.println(pos);
         int posc = (int) jcCity.getSelectedIndex();
         System.out.println(posc);
+        int poci = (int) jcGroup.getSelectedIndex();
+        System.out.println(poci);
         
-//        if(rol.equals("Administrador")){
-//            
-//            cone.modifyDB("INSERT INTO Administrador VALUES ("+txtNuip.getText()+","+idRol[pos]+",1)");
-//            
-//        }else if(rol.equals("Acudiente")){
-//            
-//            cone.modifyDB("INSERT INTO Acudiente VALUES ("+txtNuip.getText()+","+idRol[pos]+",1)");
-//            
-//        }else if(rol.equals("Docente")){
-//            
-//            cone.modifyDB("INSERT INTO Docente VALUES ("+txtNuip.getText()+","+idRol[pos]+"1)");
-//            
-//        }else if(rol.equals("Estudiante")){
-//            
-//            cone.modifyDB("INSERT INTO Estudiante VALUES ("+txtNuip.getText()+","+idRol[pos]+"1)");
-//       }
         
          try {
             int Edad = (int)jsAge.getValue();
@@ -750,12 +808,30 @@ public class Admin extends javax.swing.JInternalFrame {
             }
             int PosNaci = jcBirthPlace.getSelectedIndex();
             int PosExp = jcExpeditionPlace.getSelectedIndex();
+            
         cone.modifyDB("INSERT INTO usuario VALUES ( "+txtNuip.getText()+" ,' "+txtSurname.getText()+" ',' "+txtSecondL.getText()+
                 " ',' "+txtFirstName.getText()+" ',' "+txtSecondName.getText()+"', '"+txtPhone.getText()+"' ,' "+txtAddress.getText()+"',"
                 +Edad+",' "+txtEmail.getText()+" ','"+Genero+"',' "+txtUser.getText()+" ',' "+jpPassword.getText()+" ',"+idCiudad[posc]+","+idRol[pos]+"); ");
         
          cone.modifyDB("INSERT INTO Nuip VALUES ("+txtNuip.getText()+",'"+txtDate.getText()+"',"+IdNacimiento[PosNaci]
              +",'"+txtHeight.getText()+"','"+txtRH.getText()+"','"+txtExpeditionDate.getText()+"',"+IdExpedicion[PosExp]+"); ");
+         
+         if(rol.equals("Administrador")){
+            
+            cone.modifyDB("INSERT INTO Administrador VALUES ("+txtNuip.getText()+","+idRol[pos]+",1)");
+            
+        }else if(rol.equals("acudiente")){
+            
+            cone.modifyDB("INSERT INTO acudiente VALUES ("+txtNuip.getText()+","+idRol[pos]+",1)");
+            
+        }else if(rol.equals("Docente")){
+            
+            cone.modifyDB("INSERT INTO Docente VALUES ("+txtNuip.getText()+","+idRol[pos]+",1)");
+            
+        }else if(rol.equals("Estudiante")){
+            
+            cone.modifyDB("INSERT INTO Estudiante VALUES ("+txtNuip.getText()+","+idRol[pos]+","+IdGroup[pos]+",1)");
+       }
         
         } catch (Exception ex) {
             System.out.println("Error" + ex);
@@ -774,7 +850,7 @@ public class Admin extends javax.swing.JInternalFrame {
                 Genero = "Femenino";
             }
             
-            cone.modifyDB("UPDATE ");
+            cone.modifyDB("UPDATE SET ");
             
         } catch (Exception e) {
             System.out.println("Error" + e);
@@ -819,6 +895,7 @@ public class Admin extends javax.swing.JInternalFrame {
     private void jcRolItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcRolItemStateChanged
        String rolEs = (String) jcRol.getSelectedItem();
        int posEst = (int) jcRol.getSelectedIndex();
+       
        if(rolEs.equals("Estudiante")){
            jcGroup.setVisible(true);
            txtGuardian.setVisible(true);
@@ -835,15 +912,15 @@ public class Admin extends javax.swing.JInternalFrame {
            lblImg.setVisible(false);
            lblAcu.setVisible(false);
            
-       }else if(rolEs.equals("Acudiente")){
+       }else if(rolEs.equals("acudiente")){
            jcGroup.setVisible(false);
            txtGuardian.setVisible(false);
            jLabel25.setVisible(false);
            jLabel26.setVisible(false);
            lblImg.setVisible(false);
            lblAcu.setVisible(false);
-       
        }
+       
        else if(rolEs.equals("Docente")){
            jcGroup.setVisible(false);
            txtGuardian.setVisible(false); 

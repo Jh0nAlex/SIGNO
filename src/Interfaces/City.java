@@ -3,10 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Interfaces;
+package gestion;
 
 
-import Resources.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
@@ -14,22 +13,35 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author Valentina
+ * @author Grupo prueba y calidad
  */
-public class City extends javax.swing.JInternalFrame {
+public class Ciudad extends javax.swing.JInternalFrame {
 
     DefaultTableModel modelo;
     Connection cone;
-
-    String idDep[ ] ;
-    public City() {
+    String idDep[];
+    
+         /**
+ @author Grupo prueba y calidad 
+ @version 1.0 
+ Constructor para iniciar la conexion a la base de datos ,iniciar el metodo actualizar de la tabla, el metodo que carga los departamentos de la base de datos y deshabilitar el boton actualizar en la interfaz. 
+*/
+    
+    public Ciudad() {
         initComponents();
         cone = new Connection();
         actualizar();
         cargarCombodepart();
         
         btnUpdate.setVisible(false);
-    }
+    } 
+    
+    /**
+ @author Grupo prueba y calidad 
+ @version 1.0 
+ Metodo que genera el ID o identificacion de cada ciudad que se registre en la base de datos.
+*/
+    
 
     public void cargarId(){
  
@@ -48,6 +60,11 @@ public class City extends javax.swing.JInternalFrame {
         
     }
     
+          /**
+ @author Grupo prueba y calidad 
+ @version 1.0 
+ Metodo que reestablece los datos de la tabla al ser modificada por el usuario.
+*/
     public void actualizar(){
         
         try {
@@ -73,6 +90,12 @@ public class City extends javax.swing.JInternalFrame {
         cargarId();
     }
     
+          /**
+ @author Grupo prueba y calidad 
+ @version 1.0 
+ Metodo que tiene la funcion de cargar nuevamente la tabla con datos al ser actualizada.
+ @param valor El parametro valor es el que contiene el dato que genera la consulta en la base de datos especificamente en la tabla ciudad.
+*/
     public void cargar(String valor){
     
         try{
@@ -99,8 +122,13 @@ public class City extends javax.swing.JInternalFrame {
             cargarId();
         }
 
-    
+          /**
+ @author Grupo prueba y calidad 
+ @version 1.0 
+ Metodo que devuelve los departamentos existentes en la base de datos signo_db y los carga en el jcombobox.
+*/
     public void cargarCombodepart() {
+        
         try {
             ResultSet resul =cone.consultDB("SELECT COUNT(*) cuenta FROM departamento");
             if(resul.next()){
@@ -111,9 +139,11 @@ public class City extends javax.swing.JInternalFrame {
         }
         try {
             int i = 0;
-            ResultSet rs=cone.consultDB("SELECT idDepartamento,Nombre FROM Departamento");
+            ResultSet rs=cone.consultDB("SELECT idDepartamento,Nombre FROM departamento");
+            
             while  (rs.next()) {
             idDep[i] = rs.getString("idDepartamento");
+            System.out.println(idDep[i]);
             jcDepart.addItem(rs.getString("Nombre"));
             i++;
             }
@@ -176,6 +206,12 @@ public class City extends javax.swing.JInternalFrame {
 
         jLabel5.setText("Departamento");
 
+        jcDepart.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jcDepartItemStateChanged(evt);
+            }
+        });
+
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
@@ -214,11 +250,6 @@ public class City extends javax.swing.JInternalFrame {
                         .addContainerGap()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(77, 77, 77)
-                        .addComponent(btnAdd)
-                        .addGap(26, 26, 26)
-                        .addComponent(btnUpdate))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(28, 28, 28)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
@@ -234,7 +265,12 @@ public class City extends javax.swing.JInternalFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(txtIndi)
                                     .addComponent(txtName)
-                                    .addComponent(lblId, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                    .addComponent(lblId, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(82, 82, 82)
+                        .addComponent(btnAdd)
+                        .addGap(60, 60, 60)
+                        .addComponent(btnUpdate)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -257,12 +293,12 @@ public class City extends javax.swing.JInternalFrame {
                     .addComponent(jLabel5)
                     .addComponent(jcDepart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAdd)
                     .addComponent(btnUpdate))
-                .addContainerGap(76, Short.MAX_VALUE))
+                .addContainerGap(74, Short.MAX_VALUE))
         );
 
         pack();
@@ -275,6 +311,10 @@ public class City extends javax.swing.JInternalFrame {
         System.out.println(pos);
         
         cone.modifyDB("INSERT INTO Ciudad VALUES (NULL, '" +txtName.getText()+ "', '" +txtIndi.getText()+ "', '" +idDep[pos]+ "')");
+        JOptionPane.showMessageDialog(rootPane, "La Ciudad ha sido registrada exitosamente");
+        
+        cargar("");
+        actualizar();
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActionPerformed
@@ -284,7 +324,7 @@ public class City extends javax.swing.JInternalFrame {
         try {
             cone.modifyDB("DELETE FROM ciudad WHERE idCiudad="+jTable1.getValueAt(row, 0));
             actualizar();
-            JOptionPane.showMessageDialog(rootPane, "el estudiantes a sido eliminado");
+            JOptionPane.showMessageDialog(rootPane, "La Ciudad ha sido eliminada");
             
             
         } catch (Exception e) {
@@ -299,14 +339,14 @@ public class City extends javax.swing.JInternalFrame {
         int row = jTable1.getSelectedRow();
         
         try {
-            ResultSet rs = cone.consultDB("SELECT * FROM ciudad WHERE idCiudad="+jTable1.getValueAt(row, 0));
+            ResultSet rs = cone.consultDB("SELECT * FROM ciudad INNER JOIN departamento ON departamento.idDepartamento = ciudad.Departamento_id WHERE idCiudad="+jTable1.getValueAt(row, 0));
             
             rs.next();
             lblId.setText(rs.getString("idCiudad"));
             txtName.setText(rs.getString("Nombre"));
             txtIndi.setText(rs.getString("Indicativo"));
-            jcDepart.addItem(rs.getString("Pais_id"));
-            jcDepart.setSelectedItem(rs.getString("Pais_id"));
+            jcDepart.setSelectedItem(rs.getString("departamento.Nombre"));
+           
             
         } catch (Exception e) {
             System.out.println("Error"+e);
@@ -314,11 +354,30 @@ public class City extends javax.swing.JInternalFrame {
        
     }//GEN-LAST:event_modificarActionPerformed
 
+    private void jcDepartItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcDepartItemStateChanged
+        // TODO add your handling code here:
+        int pos = jcDepart.getSelectedIndex();
+        System.out.println(idDep[pos]);
+    }//GEN-LAST:event_jcDepartItemStateChanged
+
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
-        String nombre = txtName.getText();
+         String nombre = txtName.getText();
+        String indicativo = txtIndi.getText();
+        int Id = Integer.parseInt(lblId.getText());
+        int pos = jcDepart.getSelectedIndex();
         
+        try {
+            cone.modifyDB("UPDATE ciudad SET Nombre=' "+nombre+" ',Indicativo="+indicativo+",Departamento_id ="+idDep[pos]+" WHERE idCiudad="+Id);
+            
+            JOptionPane.showMessageDialog(rootPane,"La ciudad ha sido actualizada exitosamente");
+            
+        } catch (Exception e) {
+            System.out.println("Error"+e);
+        }
         
+        cargar("");
+        actualizar();
     }//GEN-LAST:event_btnUpdateActionPerformed
 
 

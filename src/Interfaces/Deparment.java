@@ -3,10 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Interfaces;
+package gestion;
 
 
-import Resources.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
@@ -14,15 +13,21 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author Valentina
+ * @author Grupo prueba y calidad
  */
-public class Departament extends javax.swing.JInternalFrame {
+public class Departamento extends javax.swing.JInternalFrame {
     
     DefaultTableModel modelo;
     Connection cone;
     String idPais[];
     
-    public Departament() {
+      /**
+ @author Grupo prueba y calidad 
+ @version 1.0 
+ Constructor para iniciar la conexion a la base de datos, iniciar el metodo actualizar de la tabla, el metodo que carga los departamentos de la base de datos y deshabilitar el boton actualizar en la interfaz.
+*/
+    
+    public Departamento() {
         initComponents();
         cone = new Connection();
         actualizar();
@@ -30,6 +35,13 @@ public class Departament extends javax.swing.JInternalFrame {
         
         btnUpdate.setVisible(false);
     }
+    
+        
+/**
+ @author Grupo prueba y calidad 
+ @version 1.0 
+ Metodo que genera el ID o identificacion de cada departamento que se registre en la base de datos.
+*/
     
     public void cargarId(){
  
@@ -47,6 +59,11 @@ public class Departament extends javax.swing.JInternalFrame {
         }
         
     }
+       /**
+ @author Grupo prueba y calidad 
+ @version 1.0 
+ Metodo que reestablece los datos de la tabla al ser modificada por el usuario.
+*/
     
     public void actualizar(){
         
@@ -73,6 +90,12 @@ public class Departament extends javax.swing.JInternalFrame {
         cargarId();
     }
     
+       /**
+ @author Grupo prueba y calidad 
+ @version 1.0 
+ Metodo que tiene la funcion de cargar nuevamente la tabla con datos al ser actualizada.
+ @param valor El parametro valor es el que contiene el dato que genera la consulta en la base de datos especificamente en la tabla departamento.
+*/
     public void cargar(String valor){
     
         try{
@@ -99,6 +122,11 @@ public class Departament extends javax.swing.JInternalFrame {
             cargarId();
         }
 
+          /**
+ @author Grupo prueba y calidad 
+ @version 1.0 
+ Metodo que devuelve el nombre de los paises existentes en la base de datos signo_db y los carga en el jcombobox.
+*/
     public void cargarComboPais() {
         
         try {
@@ -124,29 +152,7 @@ public class Departament extends javax.swing.JInternalFrame {
         }
     
     }
-    public void id (String valor){
-        try{
-      String[] registros = new String[2];
-      String[] titulos = {"IdPais","Nombre"};
-      
-      modelo = new DefaultTableModel(null, titulos);
-      
-      ResultSet rs = cone.consultDB("SELECT * FROM pais P INNER JOIN departamento D ON D.idDepartamento = P.idPais WHERE departamento.idDepartamento= "+valor);
-      
-      while(rs.next( )){
-                registros[0] = rs.getString("IdPais");
-                registros[1] = rs.getString("Nombre");
-     
-                modelo.addRow(registros);
-     
-            }
-            
-            jTable1.setModel(modelo);
-            
-    }catch(Exception e){
-            System.out.println("Error"+e);
-    }
-    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -199,6 +205,12 @@ public class Departament extends javax.swing.JInternalFrame {
         jLabel2.setText("Id");
 
         jLabel4.setText("Pais");
+
+        jcPais.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jcPaisItemStateChanged(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -296,6 +308,10 @@ public class Departament extends javax.swing.JInternalFrame {
         String pais = (String) jcPais.getSelectedItem();
         System.out.println(pos);
         cone.modifyDB("INSERT INTO Departamento VALUES (NULL, '" +txtName.getText()+ "', '" +txtPrefijoTel.getText()+ "' , '" +idPais[pos]+"')");
+        JOptionPane.showMessageDialog(rootPane, "El Departamento ha sido registrado exitosamente");
+        
+        cargar("");
+        actualizar();
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActionPerformed
@@ -305,7 +321,7 @@ public class Departament extends javax.swing.JInternalFrame {
         try {
             cone.modifyDB("DELETE FROM departamento WHERE idDepartamento="+jTable1.getValueAt(row, 0));
             actualizar();
-            JOptionPane.showMessageDialog(rootPane, "el estudiantes a sido eliminado");
+            JOptionPane.showMessageDialog(rootPane, "El Departamento ha sido eliminado");
             
         } catch (Exception e) {
             System.out.println("Error"+ e);
@@ -319,15 +335,14 @@ public class Departament extends javax.swing.JInternalFrame {
        int row = jTable1.getSelectedRow();
        
         try {
-            ResultSet rs = cone.consultDB("SELECT * FROM departamento WHERE idDepartamento="+jTable1.getValueAt(row, 0));
+            ResultSet rs = cone.consultDB("SELECT * FROM departamento INNER JOIN pais ON pais.idPais= departamento.Pais_id  WHERE idDepartamento="+jTable1.getValueAt(row, 0)+" ");
             
             rs.next();
             lblId.setText(rs.getString("idDepartamento"));
-            txtName.setText(rs.getString("Nombre"));
+            txtName.setText(rs.getString("departamento.Nombre"));
             txtPrefijoTel.setText(rs.getString("PrefijoTelefonico"));
-            jcPais.addItem(rs.getString("Pais_id"));
-            jcPais.setSelectedItem(rs.getString("Pais_id"));
-            
+            jcPais.setSelectedItem(rs.getString("pais.Nombre"));
+           
             
             
         } catch (Exception e) {
@@ -341,10 +356,13 @@ public class Departament extends javax.swing.JInternalFrame {
         String nombre = txtName.getText();
         String Prefijo = txtPrefijoTel.getText();
         int Id = Integer.parseInt( lblId.getText());
-        int Pais = Integer.parseInt((String) jcPais.getSelectedItem());
+        int pos = jcPais.getSelectedIndex();
         
         try {
-            cone.modifyDB("UPDATE Departamento SET Nombre=' "+nombre+" ',PrefijoTelefonico=' "+Prefijo+" ',Pais_id= "+Pais+" WHERE idDepartamento="+Id);
+            cone.modifyDB("UPDATE Departamento SET Nombre=' "+nombre+" ',PrefijoTelefonico= "+Prefijo+", Pais_id = "+idPais[pos]+" WHERE idDepartamento="+Id);
+            
+        JOptionPane.showMessageDialog(rootPane, "El Departamento ha sido actualizado exitosamente");
+        
         } catch (Exception e) {
             System.out.println("Error"+ e);
         }
@@ -353,6 +371,11 @@ public class Departament extends javax.swing.JInternalFrame {
         cargar("");
         actualizar();
     }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void jcPaisItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcPaisItemStateChanged
+         int pos = jcPais.getSelectedIndex();
+         System.out.println(idPais[pos]);
+    }//GEN-LAST:event_jcPaisItemStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
