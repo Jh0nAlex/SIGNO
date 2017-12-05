@@ -5,7 +5,6 @@
  */
 package Interfaces;
 
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -14,9 +13,15 @@ import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import Resources.Connection;
+
 /**
+ * /**clase principal para realizar inserción, consultas, actualización e
+ * inactivación de logros
+ * <pre> Connection.Connection(); </pre>
  *
- * @author unicuces
+ * @autor grupo Documentación
+ * @version 1.0 04-12-2017
+ *
  */
 public class Achievements extends javax.swing.JInternalFrame {
 
@@ -26,7 +31,15 @@ public class Achievements extends javax.swing.JInternalFrame {
     String idT;
 
     /**
-     * Creates new form Archievements
+     * Módulo de principal de conexion a una base de datos, inavilitacion de
+     * boton actualizar, llamado de asinaturas, cargado de id y carga de tabla
+     * de consultas llama los metodos mostrar periodo mostrar materia sumar
+     * porsentage
+     * <pre> Connection.Connection(); </pre>
+     *
+     * @autor grupo Documentación
+     * @version 1.0 04-12-2017
+     *
      */
     public Achievements() {
         initComponents();
@@ -41,6 +54,15 @@ public class Achievements extends javax.swing.JInternalFrame {
         buscar = new DefaultListModel();
     }
 
+    /**
+     * Metodo para realizar la consulta de los datos ingresados en la tabla
+     * logros
+     * <pre> Connection.Connection(); </pre>
+     *
+     * @autor grupo Documentación
+     * @version 1.0 04-12-2017
+     *
+     */
     void tbAchievements(String value) {
         String[] titulos = {"idlogro", "Nombre", "Descripcion", "Materia", "Periodo", "Porcentaje"};
         String[] registros = new String[6];
@@ -77,6 +99,14 @@ public class Achievements extends javax.swing.JInternalFrame {
 
     }
 
+    /**
+     * Metodo para realizar la consulta de periodos esitentes
+     * <pre> Connection.Connection(); </pre>
+     *
+     * @autor grupo Documentación
+     * @version 1.0 04-12-2017
+     *
+     */
     public void mostrarPeriodo() {
         try {
             String sql = "SELECT idperiodo FROM periodo";
@@ -93,6 +123,14 @@ public class Achievements extends javax.swing.JInternalFrame {
         }
     }
 
+    /**
+     * Metodo para realizar la consulta de materias esitentes
+     * <pre> Connection.Connection(); </pre>
+     *
+     * @autor grupo Documentación
+     * @version 1.0 04-12-2017
+     *
+     */
     public void mostrarMateria() {
         try {
             String mysql = "SELECT * FROM materia";
@@ -112,6 +150,14 @@ public class Achievements extends javax.swing.JInternalFrame {
         }
     }
 
+    /**
+     * Metodo para realizar la
+     * <pre> Connection.Connection(); </pre>
+     *
+     * @autor grupo Documentación
+     * @version 1.0 04-12-2017
+     *
+     */
     public void cargarListas() {
         try {
             String sql = "select * from logro";
@@ -129,6 +175,14 @@ public class Achievements extends javax.swing.JInternalFrame {
         }
     }
 
+    /**
+     * Metodo para realizar la selecion de datos para actualizar
+     * <pre> Connection.Connection(); </pre>
+     *
+     * @autor grupo Documentación
+     * @version 1.0 04-12-2017
+     *
+     */
     public void selectUpdate() {
         Connection cone2 = new Connection();
         int selectRow;
@@ -167,14 +221,29 @@ public class Achievements extends javax.swing.JInternalFrame {
         }
     }
 
+    /**
+     * Metodo para limpiar los campos
+     * <pre> Connection.Connection(); </pre>
+     *
+     * @autor grupo Documentación
+     * @version 1.0 04-12-2017
+     *
+     */
     public void clear() {
         txtName.setText("");
         txtDescription.setText("");
         spiPercentage.setValue(0);
-        
 
     }
 
+    /**
+     * Metodo para realizar la actualizacion de tabla de la base de datos
+     * <pre> Connection.Connection(); </pre>
+     *
+     * @autor grupo Documentación
+     * @version 1.0 04-12-2017
+     *
+     */
     public void updateTable() {
         String idA = txtId.getText();
         String name = txtName.getText();
@@ -189,13 +258,21 @@ public class Achievements extends javax.swing.JInternalFrame {
         } else if (rbAcademic.isSelected()) {
             type = "ACA";
         }
-        
+
         cone.modifyDB("UPDATE logro SET Nombre='" + name + "', descripcion='" + descr
-                + "', Materia_id='" + idS + "',periodo_id='" + idP + "', porcentaje='" + Percentaje + "', tipo='" + type + "' WHERE idLogro='" + idA+"'");
+                + "', Materia_id='" + idS + "',periodo_id='" + idP + "', porcentaje='" + Percentaje + "', tipo='" + type + "' WHERE idLogro='" + idA + "'");
         JOptionPane.showMessageDialog(null, "Actualización Exitosa");
 
     }
 
+    /**
+     * Metodo para realizar la insercion de datos
+     * <pre> Connection.Connection(); </pre>
+     *
+     * @autor grupo Documentación
+     * @version 1.0 04-12-2017
+     *
+     */
     public void insert() {
         int Porcentaje;
         String materias = (String) cdoSubjects.getSelectedItem();
@@ -217,6 +294,14 @@ public class Achievements extends javax.swing.JInternalFrame {
 
     }
 
+    /**
+     * Metodo para hacer la carga del id
+     * <pre> Connection.Connection(); </pre>
+     *
+     * @autor grupo Documentación
+     * @version 1.0 04-12-2017
+     *
+     */
     public void id() {
         try {
 
@@ -240,6 +325,14 @@ public class Achievements extends javax.swing.JInternalFrame {
 
     }
 
+    /**
+     * Metodo para realizar la inativacion mediante un update al campo activo
+     * <pre> Connection.Connection(); </pre>
+     *
+     * @autor grupo Documentación
+     * @version 1.0 04-12-2017
+     *
+     */
     public void inactivate() {
         int selectRow;
 
@@ -259,6 +352,14 @@ public class Achievements extends javax.swing.JInternalFrame {
         }
     }
 
+    /**
+     * Metodo para sumar porcentage
+     * <pre> Connection.Connection(); </pre>
+     *
+     * @autor grupo Documentación
+     * @version 1.0 04-12-2017
+     *
+     */
     public void sumPercentage() {
 
         ResultSet rs = cone.consultDB("select * from logro where Materia_id = '"
@@ -272,13 +373,13 @@ public class Achievements extends javax.swing.JInternalFrame {
                 int porsrntage = Integer.parseInt(rs.getString("porcentaje"));
                 total = total + porsrntage;
             }
-
+            
             txtTotal.setText(String.valueOf(total));
             if (total == 90) {
                 JOptionPane.showMessageDialog(null, "El porcentaje esta por llegar al 100%");
                 spiPercentage.setValue(10);
 
-            } else if (total == 100) {
+            } else if (total >= 100) {
                 JOptionPane.showMessageDialog(null, "El porcentaje ya llegó a 100%");
                 btnInsert.setEnabled(false);
             } else {
@@ -291,11 +392,6 @@ public class Achievements extends javax.swing.JInternalFrame {
 
     }
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -654,6 +750,14 @@ public class Achievements extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Boton para insertar los datos
+     * <pre> Connection.Connection(); </pre>
+     *
+     * @autor grupo Documentación
+     * @version 1.0 04-12-2017
+     *
+     */
     private void btnInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertActionPerformed
         int total = 0;
         try {
@@ -666,18 +770,26 @@ public class Achievements extends javax.swing.JInternalFrame {
                 System.out.println(total);
 
             }
+            
             int porcen = (int) spiPercentage.getValue();
-            if (total > porcen || porcen > 100) {
-                JOptionPane.showMessageDialog(null, "El porcentaje ingresado no Puede sobrepasar el 100%");
+            if(porcen > total && total > 100){
+                 JOptionPane.showMessageDialog(null, "El porcentaje no puede ser mayor a 100 HOLA");
+  
+            }else if(porcen > 100) {
+                    JOptionPane.showMessageDialog(null, "El porcentaje no puede ser mayor a 100 chao");
+                }else if (total > 100) {
+                    JOptionPane.showMessageDialog(null, "El porcentaje ingresado no Puede sobrepasar el 100%");
 
-            } else {
-                insert();
-                clear();
-                tbAchievements("");
-                sumPercentage();
-                id();
+                } else {
+                    insert();
+                    clear();
+                    tbAchievements("");
+                    sumPercentage();
+                    id();
 
-            }
+                }
+            
+            
         } catch (SQLException ex) {
             Logger.getLogger(Achievements.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -685,6 +797,14 @@ public class Achievements extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_btnInsertActionPerformed
 
+    /**
+     * Selecion de los periodos
+     * <pre> Connection.Connection(); </pre>
+     *
+     * @autor grupo Documentación
+     * @version 1.0 04-12-2017
+     *
+     */
     private void cboPeriodItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cboPeriodItemStateChanged
         int num = cboPeriod.getSelectedIndex();
         if (num != 0) {
@@ -712,6 +832,14 @@ public class Achievements extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_cboPeriodActionPerformed
 
+    /**
+     * Selecion de materias
+     * <pre> Connection.Connection(); </pre>
+     *
+     * @autor grupo Documentación
+     * @version 1.0 04-12-2017
+     *
+     */
     private void cdoSubjectsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cdoSubjectsActionPerformed
         int num = cdoSubjects.getSelectedIndex();
         if (num != 0) {
@@ -737,6 +865,14 @@ public class Achievements extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_cdoSubjectsActionPerformed
 
+    /**
+     * campo para hacer la consulta de datos en la tabla
+     * <pre> Connection.Connection(); </pre>
+     *
+     * @autor grupo Documentación
+     * @version 1.0 04-12-2017
+     *
+     */
     private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
         tbAchievements(txtSearch.getText());
     }//GEN-LAST:event_txtSearchKeyReleased
@@ -749,6 +885,14 @@ public class Achievements extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_rbAcademicActionPerformed
 
+    /**
+     * Boton para actulizar los datos
+     * <pre> Connection.Connection(); </pre>
+     *
+     * @autor grupo Documentación
+     * @version 1.0 04-12-2017
+     *
+     */
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
         updateTable();
@@ -758,7 +902,7 @@ public class Achievements extends javax.swing.JInternalFrame {
         btnUpdate.setEnabled(false);
         btnInsert.setEnabled(true);
         tbAchievements("");
-        
+
 
     }//GEN-LAST:event_btnUpdateActionPerformed
 
@@ -766,6 +910,14 @@ public class Achievements extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtSearchActionPerformed
 
+    /**
+     * Actualiza datos en la tabla
+     * <pre> Connection.Connection(); </pre>
+     *
+     * @autor grupo Documentación
+     * @version 1.0 04-12-2017
+     *
+     */
     private void ActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActualizarActionPerformed
         // TODO add your handling code here:
         selectUpdate();
@@ -773,6 +925,15 @@ public class Achievements extends javax.swing.JInternalFrame {
         btnInsert.setEnabled(false);
     }//GEN-LAST:event_ActualizarActionPerformed
 
+    /**
+     * inativar datos en la tabla realizando un update al campo activo poniendo
+     * como valor 0
+     * <pre> Connection.Connection(); </pre>
+     *
+     * @autor grupo Documentación
+     * @version 1.0 04-12-2017
+     *
+     */
     private void InactivarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InactivarActionPerformed
         // TODO add your handling code here:
         inactivate();

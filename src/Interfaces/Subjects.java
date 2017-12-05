@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Interfaces;
 
 import javax.swing.JOptionPane;
@@ -12,15 +7,32 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import Resources.Connection;
+
 /**
+ * /**clase principal para realizar inserción, consultas, actualización e
+ * inactivación de materias
+ * <pre> Connection.Connection(); </pre>
  *
- * @author usuario
+ * @autor grupo Documentación
+ * @version 1.0 04-12-2017
+ *
  */
 public class Subjects extends javax.swing.JInternalFrame {
 
     Connection cone;
     DefaultTableModel modelo;
     String idT;
+
+    /**
+     * Módulo de principal de conexion a una base de datos, inavilitacion de
+     * boton actualizar, llamado de asinaturas, cargado de id y carga de tabla
+     * de consultas
+     * <pre> Connection.Connection(); </pre>
+     *
+     * @autor grupo Documentación
+     * @version 1.0 04-12-2017
+     *
+     */
 
     public Subjects() {
         initComponents();
@@ -32,17 +44,33 @@ public class Subjects extends javax.swing.JInternalFrame {
 
     }
 
+    /**
+     * Metodo para realizar la insercion de nuevas materias a la base de datos
+     * <pre> Connection.Connection(); </pre>
+     *
+     * @autor grupo Documentación
+     * @version 1.0 04-12-2017
+     *
+     */
     public void insert() {
         selectSubjects();
         String idS = txtId.getText();
         String name = txtName.getText();
-        String idSu =(String) cboSubjects.getSelectedItem();
+        String idSu = (String) cboSubjects.getSelectedItem();
 
         cone.modifyDB("insert into materia values(" + idS + ",'" + name + "','1'," + idSu + ")");
         JOptionPane.showMessageDialog(null, "registro exitoso");
 
     }
 
+    /**
+     * Metodo para realizar la carga del id
+     * <pre> Connection.Connection(); </pre>
+     *
+     * @autor grupo Documentación
+     * @version 1.0 04-12-2017
+     *
+     */
     public void id() {
         try {
 
@@ -66,18 +94,27 @@ public class Subjects extends javax.swing.JInternalFrame {
 
     }
 
+    /**
+     * Metodo para traer la asinaturas activas de la base de datos con su nombre
+     * e id
+     * <pre> Connection.Connection(); </pre>
+     *
+     * @autor grupo Documentación
+     * @version 1.0 04-12-2017
+     *
+     */
     private void selectSubjects() {
         Connection cone2 = new Connection();
 
         try {
             ResultSet rs = cone2.consultDB("select * from asignatura");
             while (rs.next()) {
-                
-               int state;
+
+                int state;
                 state = Integer.parseInt(rs.getString("Activo"));
                 if (state == 1) {
-                
-                cboSubjects.addItem(rs.getString("idAsignatura"));
+
+                    cboSubjects.addItem(rs.getString("idAsignatura"));
                 }
             }
 
@@ -85,18 +122,27 @@ public class Subjects extends javax.swing.JInternalFrame {
         }
     }
 
+    /**
+     * Metodo para realizar la consulta de las materias ingresadas trallendo
+     * codigo nombre y asinatura
+     * <pre> Connection.Connection(); </pre>
+     *
+     * @autor grupo Documentación
+     * @version 1.0 04-12-2017
+     *
+     */
     public void tbSubjects(String value) {
-        
+
         try {
             String titulos[] = {"codigo", "Materia", "Asignatura"};
             String fila[] = new String[3];
 
             modelo = new DefaultTableModel(null, titulos);
             Connection cone2 = new Connection();
-            
+
             ResultSet rs = cone2.consultDB("select * from materia as mat "
                     + "INNER JOIN asignatura as asi on mat.Asignatura_id = asi.idAsignatura "
-             + "WHERE CONCAT (mat.idMateria, mat.Nombre, asi.Nombre) LIKE '%" + value + "%'");
+                    + "WHERE CONCAT (mat.idMateria, mat.Nombre, asi.Nombre) LIKE '%" + value + "%'");
 
             while (rs.next()) {
                 int state;
@@ -108,7 +154,7 @@ public class Subjects extends javax.swing.JInternalFrame {
                     fila[2] = rs.getString("asi.Nombre");
 
                     modelo.addRow(fila);
-                    
+
                 }
             }
 
@@ -116,14 +162,18 @@ public class Subjects extends javax.swing.JInternalFrame {
         } catch (SQLException ex) {
             Logger.getLogger(Subjects.class.getName()).log(Level.SEVERE, null, ex);
         }
-      
-    }
-//    select mat.idMateria, mat.Nombre, mat.Asignatura_id "
-//                        + "from materia as mat "
-//                        + "inner join asignatura as asi "
-//                        + "on mat.Asignatura_id = asi.idAsignatura"
-//                        + "where mat.idMateria = " + idT 
 
+    }
+
+    /**
+     * Metodo para la selecion de datos a actualizar y ubicarlos en sus
+     * repertivos lugares de modificacion
+     * <pre> Connection.Connection(); </pre>
+     *
+     * @autor grupo Documentación
+     * @version 1.0 04-12-2017
+     *
+     */
     public void selectUpdate() {
         int selectRow;
 
@@ -134,7 +184,7 @@ public class Subjects extends javax.swing.JInternalFrame {
             try {
 
                 idT = (String) modelo.getValueAt(tbSubjects.getSelectedRow(), 0);
-                ResultSet rs = cone.consultDB("select * from materia where idMateria = "+idT);
+                ResultSet rs = cone.consultDB("select * from materia where idMateria = " + idT);
 
                 if (rs.next()) {
 
@@ -151,6 +201,14 @@ public class Subjects extends javax.swing.JInternalFrame {
         }
     }
 
+    /**
+     * Metodo para realizar la actualizacion de los datos a la tabla materias
+     * <pre> Connection.Connection(); </pre>
+     *
+     * @autor grupo Documentación
+     * @version 1.0 04-12-2017
+     *
+     */
     public void updateTable() {
         String idS = txtId.getText();
         String name = txtName.getText();
@@ -158,12 +216,21 @@ public class Subjects extends javax.swing.JInternalFrame {
 
         Integer.parseInt(idS);
 
-        cone.modifyDB("UPDATE materia SET Nombre='"+name+"', Asignatura_id=" + idA
+        cone.modifyDB("UPDATE materia SET Nombre='" + name + "', Asignatura_id=" + idA
                 + " WHERE idMateria=" + idS);
         JOptionPane.showMessageDialog(null, "Actualización Exitosa");
 
     }
 
+    /**
+     * Metodo para inativar las materias mediante un update al campo activo a de
+     * la base de datos
+     * <pre> Connection.Connection(); </pre>
+     *
+     * @autor grupo Documentación
+     * @version 1.0 04-12-2017
+     *
+     */
     public void inactivate() {
         int selectRow;
 
@@ -182,7 +249,16 @@ public class Subjects extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Inactivación Éxitosa");
         }
     }
-    private void clear(){
+
+    /**
+     * Metodo para limpiar todos los campos
+     * <pre> Connection.Connection(); </pre>
+     *
+     * @autor grupo Documentación
+     * @version 1.0 04-12-2017
+     *
+     */
+    private void clear() {
         txtName.setText("");
     }
 
@@ -379,6 +455,14 @@ public class Subjects extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Boton para insertar que llama los metodos insert tbSubjects, id, clear
+     * <pre> Connection.Connection(); </pre>
+     *
+     * @autor grupo Documentación
+     * @version 1.0 04-12-2017
+     *
+     */
     private void btnInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertActionPerformed
         // TODO add your handling code here:
         insert();
@@ -387,17 +471,42 @@ public class Subjects extends javax.swing.JInternalFrame {
         clear();
     }//GEN-LAST:event_btnInsertActionPerformed
 
+    /**
+     * hacer consultas por cualquier dato en el campo buscar
+     * <pre> Connection.Connection(); </pre>
+     *
+     * @autor grupo Documentación
+     * @version 1.0 04-12-2017
+     *
+     */
     private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
         // TODO add your handling code here:
         tbSubjects(txtSearch.getText());
     }//GEN-LAST:event_txtSearchKeyReleased
 
+    /**
+     * pop menu permite la selecion de los datos actualizar llamando el metodos
+     * selectUpdate
+     * <pre> Connection.Connection(); </pre>
+     *
+     * @autor grupo Documentación
+     * @version 1.0 04-12-2017
+     *
+     */
     private void popUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_popUpdateActionPerformed
         // TODO add your handling code here:
         selectUpdate();
         btnUpdate.setEnabled(true);
     }//GEN-LAST:event_popUpdateActionPerformed
 
+    /**
+     * Boton para actualizar los datos
+     * <pre> Connection.Connection(); </pre>
+     *
+     * @autor grupo Documentación
+     * @version 1.0 04-12-2017
+     *
+     */
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
         updateTable();
@@ -405,16 +514,32 @@ public class Subjects extends javax.swing.JInternalFrame {
         tbSubjects("");
     }//GEN-LAST:event_btnUpdateActionPerformed
 
+    /**
+     * Realiza la actualizacion del campo activo poniendole como valor 0
+     * <pre> Connection.Connection(); </pre>
+     *
+     * @autor grupo Documentación
+     * @version 1.0 04-12-2017
+     *
+     */
     private void popInactivateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_popInactivateActionPerformed
         // TODO add your handling code here:
         inactivate();
     }//GEN-LAST:event_popInactivateActionPerformed
 
+    /**
+     * Realiza la consulta de asinaturas con base a el id de la tabla y trae el
+     * nombre
+     * <pre> Connection.Connection(); </pre>
+     *
+     * @autor grupo Documentación
+     * @version 1.0 04-12-2017
+     *
+     */
     private void cboSubjectsItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cboSubjectsItemStateChanged
         // TODO add your handling code here:
-         Connection cone2 = new Connection();
- 
-       
+        Connection cone2 = new Connection();
+
         try {
             ResultSet rs = cone2.consultDB("select * from asignatura where idAsignatura =" + cboSubjects.getSelectedItem());
             if (rs.next()) {
