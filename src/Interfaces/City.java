@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gestion;
+package Interfaces;
 
 
+import Resources.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
@@ -15,7 +16,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Grupo prueba y calidad
  */
-public class Ciudad extends javax.swing.JInternalFrame {
+public class City extends javax.swing.JInternalFrame {
 
     DefaultTableModel modelo;
     Connection cone;
@@ -27,7 +28,7 @@ public class Ciudad extends javax.swing.JInternalFrame {
  Constructor para iniciar la conexion a la base de datos ,iniciar el metodo actualizar de la tabla, el metodo que carga los departamentos de la base de datos y deshabilitar el boton actualizar en la interfaz. 
 */
     
-    public Ciudad() {
+    public City() {
         initComponents();
         cone = new Connection();
         actualizar();

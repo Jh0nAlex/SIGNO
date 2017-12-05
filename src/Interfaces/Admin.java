@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gestionusuarios;
+package Interfaces;
 
+import Resources.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -20,7 +21,6 @@ public class Admin extends javax.swing.JInternalFrame {
     String IdExpedicion[];
     String IdNacimiento[];
     String IdGroup[];
-    ResultSet rSearch;
 /**
  @author Grupo prueba y calidad
  version 1.0
@@ -228,20 +228,22 @@ public class Admin extends javax.swing.JInternalFrame {
             if(resul.next()){
                 IdExpedicion = new String[resul.getInt("cuenta")];
             }
-        } catch (Exception e) {
+        } catch (Exception ex) {
+            System.out.println("Error" + ex);
         }
+        
         int i = 0;
         try {
-            ResultSet rs=cone7.consultDB("Select C.Nombre, C.idCiudad FROM ciudad C "
-                    + "INNER JOIN Departamento D ON C.Departamento_id = "
-                    + "D.idDepartamento WHERE D.Nombre ='" + jcDepartment2.getSelectedItem()+"'");
-            while (rs.next()){
-                jcExpeditionPlace.addItem(rs.getString("C.Nombre"));
-                IdExpedicion[i] = rs.getString("C.idCiudad");
-            i++;
+            ResultSet rs=cone7.consultDB("SELECT ciudad.Nombre, ciudad.idCiudad "
+                    + "FROM ciudad, departamento WHERE ciudad.Departamento_id=departamento.idDepartamento"
+                    + " AND departamento.Nombre='" + jcDepartment2.getSelectedItem()+"'");
+            while (rs.next()) {
+            jcExpeditionPlace.addItem(rs.getString("ciudad.Nombre"));
+            IdExpedicion[i] =rs.getString("ciudad.idCiudad");
+                    i++;
             }
-        } catch (Exception e) {
-            System.out.println("Error" + e);
+        } catch (SQLException ex) {
+            System.out.println("Error" + ex);
         }
     }
     
@@ -370,6 +372,7 @@ public class Admin extends javax.swing.JInternalFrame {
         txtGuardian = new javax.swing.JTextField();
         lblImg = new javax.swing.JLabel();
         lblAcu = new javax.swing.JLabel();
+        jLabel27 = new javax.swing.JLabel();
 
         setClosable(true);
         setIconifiable(true);
@@ -532,6 +535,9 @@ public class Admin extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel27.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        jLabel27.setText("Nombre");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -594,7 +600,7 @@ public class Admin extends javax.swing.JInternalFrame {
                                 .addComponent(jcCity, javax.swing.GroupLayout.Alignment.TRAILING, 0, 195, Short.MAX_VALUE)
                                 .addComponent(jcDepartment, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                 .addGap(47, 47, 47)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -634,23 +640,25 @@ public class Admin extends javax.swing.JInternalFrame {
                                 .addComponent(jLabel23)
                                 .addComponent(jLabel24)
                                 .addComponent(jLabel25)
-                                .addComponent(jLabel26)))
-                        .addGap(23, 23, 23)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel26)
+                                .addComponent(jLabel27)))
+                        .addGap(22, 22, 22)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jpPassword, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(txtUser)
                             .addComponent(jcGroup, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jcRol, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jcRol, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(txtGuardian, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(lblImg)))
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(txtGuardian, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(lblImg)))
-                                .addGap(0, 0, Short.MAX_VALUE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(2, 2, 2)
-                        .addComponent(lblAcu, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(lblAcu, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(59, 59, 59)))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap(61, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -767,7 +775,7 @@ public class Admin extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(0, 16, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jbUpdate)
                             .addComponent(jbConsult)
@@ -779,8 +787,11 @@ public class Admin extends javax.swing.JInternalFrame {
                                 .addComponent(txtGuardian, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(lblImg))
                             .addComponent(jLabel26))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
-                        .addComponent(lblAcu, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblAcu, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel27))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -830,7 +841,7 @@ public class Admin extends javax.swing.JInternalFrame {
             
         }else if(rol.equals("Estudiante")){
             
-            cone.modifyDB("INSERT INTO Estudiante VALUES ("+txtNuip.getText()+","+idRol[pos]+","+IdGroup[pos]+",1)");
+            cone.modifyDB("INSERT INTO Estudiante VALUES ("+txtNuip.getText()+","+idRol[pos]+","+IdGroup[poci]+","+txtGuardian.getText()+",1)");
        }
         
         } catch (Exception ex) {
@@ -875,6 +886,7 @@ public class Admin extends javax.swing.JInternalFrame {
     private void jcDepartment2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcDepartment2ItemStateChanged
         
         cargarComboCiudad2();
+        cargarComboExpedicion();
     }//GEN-LAST:event_jcDepartment2ItemStateChanged
 
     private void jcCityItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcCityItemStateChanged
@@ -903,6 +915,7 @@ public class Admin extends javax.swing.JInternalFrame {
            jLabel26.setVisible(true);
            lblImg.setVisible(true);
            lblAcu.setVisible(true);
+           jLabel27.setVisible(true);
            
        }else if(rolEs.equals("Administrador")){
            jcGroup.setVisible(false);
@@ -911,6 +924,7 @@ public class Admin extends javax.swing.JInternalFrame {
            jLabel26.setVisible(false);
            lblImg.setVisible(false);
            lblAcu.setVisible(false);
+           jLabel27.setVisible(false);
            
        }else if(rolEs.equals("acudiente")){
            jcGroup.setVisible(false);
@@ -919,6 +933,7 @@ public class Admin extends javax.swing.JInternalFrame {
            jLabel26.setVisible(false);
            lblImg.setVisible(false);
            lblAcu.setVisible(false);
+           jLabel27.setVisible(false);
        }
        
        else if(rolEs.equals("Docente")){
@@ -928,16 +943,23 @@ public class Admin extends javax.swing.JInternalFrame {
            jLabel26.setVisible(false);
            lblImg.setVisible(false);
            lblAcu.setVisible(false);
+           jLabel27.setVisible(false);
        }
     }//GEN-LAST:event_jcRolItemStateChanged
 
     private void lblImgMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblImgMousePressed
         // TODO add your handling code here:
          String Acu = txtGuardian.getText();
-            rSearch = cone.consultDB("SELECT CONCAT (PrimerNombre, '' ,PrimerApellido) Nombre FROM usuario INNER JOIN Acudiente A ON usuario.NUIP = A.Codigo WHERE A.Codigo = "+Acu);
+            
+             ResultSet rSearch = cone.consultDB("SELECT CONCAT (PrimerNombre, '' ,PrimerApellido) Nombre "
+                 + "FROM usuario "
+                 + "INNER JOIN Acudiente A "
+                 + "ON usuario.NUIP = A.Codigo "    
+                 + "WHERE A.Codigo = "+Acu);
             try {
                 while (rSearch.next()) {
-                    Acu = rSearch.getString("Nombre");
+                   
+                    lblAcu.setText(rSearch.getString("Nombre"));
                 }
         } catch (Exception e) {
                 System.out.println("Error" + e);
@@ -965,6 +987,7 @@ public class Admin extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
