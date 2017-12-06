@@ -7,6 +7,7 @@ package Interfaces;
 
 import Resources.Connection;
 import java.sql.ResultSet;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -25,7 +26,6 @@ public class EnterDegrees extends javax.swing.JInternalFrame {
     Connection con;
     DefaultTableModel model;
     String id = "";
-    
     /**
      * @author Grupo diseño
      * @version 1.0
@@ -36,7 +36,7 @@ public class EnterDegrees extends javax.swing.JInternalFrame {
     public EnterDegrees() {
         initComponents();
         con = new Connection();
-        loadTable("");
+        loadTable("", 1);
         emptyFields();
         btnUpdate.setEnabled(false);
     }
@@ -54,6 +54,7 @@ public class EnterDegrees extends javax.swing.JInternalFrame {
         jPopupMenu1 = new javax.swing.JPopupMenu();
         miModify = new javax.swing.JMenuItem();
         miDelete = new javax.swing.JMenuItem();
+        miActive = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -73,6 +74,8 @@ public class EnterDegrees extends javax.swing.JInternalFrame {
         tbData = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
         txtSearch = new javax.swing.JTextField();
+        btnActive = new javax.swing.JButton();
+        btnInactive = new javax.swing.JButton();
 
         miModify.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
         miModify.setText("Modificar");
@@ -94,11 +97,21 @@ public class EnterDegrees extends javax.swing.JInternalFrame {
         });
         jPopupMenu1.add(miDelete);
 
+        miActive.setText("Activar");
+        miActive.setComponentPopupMenu(jPopupMenu1);
+        miActive.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miActiveActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(miActive);
+
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
         setTitle("GRADOS");
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -114,7 +127,7 @@ public class EnterDegrees extends javax.swing.JInternalFrame {
             }
         });
 
-        lbSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/buscador-de-lupa.png"))); // NOI18N
+        lbSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/buscador-de-lupa.png"))); // NOI18N
         lbSearch.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 lbSearchMousePressed(evt);
@@ -159,6 +172,8 @@ public class EnterDegrees extends javax.swing.JInternalFrame {
                     .addComponent(lbNameDirector))
                 .addContainerGap(19, Short.MAX_VALUE))
         );
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, -1, -1));
 
         jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -207,8 +222,10 @@ public class EnterDegrees extends javax.swing.JInternalFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtGroupName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
+
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(308, 40, -1, 95));
 
         btnRegister.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         btnRegister.setText("REGISTRAR");
@@ -217,6 +234,7 @@ public class EnterDegrees extends javax.swing.JInternalFrame {
                 btnRegisterActionPerformed(evt);
             }
         });
+        getContentPane().add(btnRegister, new org.netbeans.lib.awtextra.AbsoluteConstraints(121, 167, -1, -1));
 
         btnUpdate.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         btnUpdate.setText("ACTUALIZAR");
@@ -225,6 +243,7 @@ public class EnterDegrees extends javax.swing.JInternalFrame {
                 btnUpdateActionPerformed(evt);
             }
         });
+        getContentPane().add(btnUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(371, 167, -1, -1));
 
         tbData.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         tbData.setModel(new javax.swing.table.DefaultTableModel(
@@ -246,62 +265,34 @@ public class EnterDegrees extends javax.swing.JInternalFrame {
         });
         jScrollPane2.setViewportView(tbData);
 
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 210, 403, 112));
+
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel5.setText("Buscar:");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(193, 350, -1, 20));
 
         txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtSearchKeyReleased(evt);
             }
         });
+        getContentPane().add(txtSearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 350, 160, -1));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(121, 121, 121)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnRegister)
-                        .addGap(151, 151, 151)
-                        .addComponent(btnUpdate)
-                        .addGap(80, 80, 80))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addGap(24, 24, 24)
-                        .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(136, 136, 136))))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(50, 50, 50)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(44, 44, 44))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(80, 80, 80))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(32, 32, 32)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnRegister)
-                    .addComponent(btnUpdate))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(31, Short.MAX_VALUE))
-        );
+        btnActive.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/math-add-icon.png"))); // NOI18N
+        btnActive.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActiveActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnActive, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 210, -1, -1));
+
+        btnInactive.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/math-minus-icon.png"))); // NOI18N
+        btnInactive.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInactiveActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnInactive, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 210, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -320,7 +311,7 @@ public class EnterDegrees extends javax.swing.JInternalFrame {
             con.modifyDB("UPDATE grupo SET Director = "+ code +", Jornada = '"+ type +"', "
                     + "Nombre = '"+ name +"' WHERE idGrupo = "+id);
             JOptionPane.showMessageDialog(rootPane, "GRUPO ACTUALIZADO EXITOSAMENTE");
-            loadTable("");
+            loadTable("", 1);
         } catch (Exception e) {
         }
         btnRegister.setEnabled(true);
@@ -351,13 +342,12 @@ public class EnterDegrees extends javax.swing.JInternalFrame {
 
     private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
         String value = txtSearch.getText();
-        loadTable(value);
+        loadTable(value, 1);
     }//GEN-LAST:event_txtSearchKeyReleased
 
     private void tbDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbDataMouseClicked
         if(evt.getButton() == 3){
-            jPopupMenu1.show(this, evt.getX(), evt.getY());
-            
+            jPopupMenu1.show(this, evt.getX(), evt.getY());            
         }
     }//GEN-LAST:event_tbDataMouseClicked
 
@@ -396,7 +386,7 @@ public class EnterDegrees extends javax.swing.JInternalFrame {
         try {
             con.modifyDB("UPDATE grupo SET Activo = 0 WHERE idGrupo = "+id);
             JOptionPane.showMessageDialog(rootPane, "GRUPO ELIMINADO EXITOSAMENTE");
-            loadTable("");
+            loadTable("", 1);
         } catch (Exception e) {
         }
     }//GEN-LAST:event_miDeleteActionPerformed
@@ -414,11 +404,33 @@ public class EnterDegrees extends javax.swing.JInternalFrame {
         try {
             con.modifyDB("INSERT INTO grupo VALUES (null, "+ code +", '"+ type +"', '"+ name +"', 1)");
             JOptionPane.showMessageDialog(rootPane, "GRUPO REGISTRADO EXITOSAMENTE");
-            loadTable("");
+            loadTable("", 1);
             emptyFields();
         } catch (Exception e) {
         }
     }//GEN-LAST:event_btnRegisterActionPerformed
+
+    private void btnActiveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActiveActionPerformed
+        loadTable("", 1);
+    }//GEN-LAST:event_btnActiveActionPerformed
+
+    private void btnInactiveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInactiveActionPerformed
+        loadTable("", 0);
+        miDelete.setVisible(false);
+        miModify.setVisible(false);
+        miActive.setVisible(true);
+    }//GEN-LAST:event_btnInactiveActionPerformed
+
+    private void miActiveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miActiveActionPerformed
+        int row = tbData.getSelectedRow();
+        id = (String) tbData.getValueAt(row, 0);
+        try {
+            con.modifyDB("UPDATE grupo SET Activo = 1 WHERE idGrupo = "+id);
+            JOptionPane.showMessageDialog(rootPane, "GRUPO ACTIVADO EXITOSAMENTE");
+            loadTable("", 1);
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_miActiveActionPerformed
 /**
  * @author Grupo diseño
  * @version 1.0
@@ -427,7 +439,7 @@ public class EnterDegrees extends javax.swing.JInternalFrame {
  * Este método carga los datos (id, director de grupo, jornada, nombre) del grado
  * en una tabla
  */
-void loadTable(String value){
+void loadTable(String value, int num){
     String title[] = {"ID Grado", "Director", "Jornada", "Nombre"};
         String records[] = new String[4];
         String sql = "SELECT gru.idGrupo, CONCAT(usu.PrimerNombre, ' ',\n" +
@@ -439,7 +451,7 @@ void loadTable(String value){
 " ON usu.NUIP = doc.Codigo\n" +
 " INNER JOIN grupo as gru\n" +
 " ON doc.Codigo = gru.Director  "+
-"WHERE gru.Activo = 1 AND CONCAT(gru.idGrupo, ' ', CONCAT(usu.PrimerNombre, ' ',\n" +
+"WHERE gru.Activo = "+num+" AND CONCAT(gru.idGrupo, ' ', CONCAT(usu.PrimerNombre, ' ',\n" +
 "usu.PrimerApellido), ' ', gru.Jornada, ' ', gru.Nombre ) LIKE '%"+value+"%' ";
          
         model = new DefaultTableModel(null, title);
@@ -459,6 +471,9 @@ void loadTable(String value){
         }catch(Exception e){
             System.out.println("Error 2 "+e);
         }
+    miDelete.setVisible(true);
+    miModify.setVisible(true);  
+    miActive.setVisible(false);
 }
 
 /**
@@ -471,15 +486,13 @@ void emptyFields(){
     txtGroupName.setText("");
     txtNuip.setText("");
     txtSearch.setText("");
-    if(rbMorning.isSelected()){
-        rbMorning.setSelected(false);
-    }else{
-        rbAfternoon.setSelected(false);
-    }
+    buttonGroup1.clearSelection();
     lbNameDirector.setText("");
 }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnActive;
+    private javax.swing.JButton btnInactive;
     private javax.swing.JButton btnRegister;
     private javax.swing.JButton btnUpdate;
     private javax.swing.ButtonGroup buttonGroup1;
@@ -495,6 +508,7 @@ void emptyFields(){
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lbNameDirector;
     private javax.swing.JLabel lbSearch;
+    private javax.swing.JMenuItem miActive;
     private javax.swing.JMenuItem miDelete;
     private javax.swing.JMenuItem miModify;
     private javax.swing.JRadioButton rbAfternoon;
